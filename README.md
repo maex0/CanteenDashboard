@@ -1,3 +1,3 @@
 # Software Quality With Cats
 
-Willkommen zu _SoftwareQualityWithCats_, einem Projekt, welches im zweiten Semesters meines Masterstudiums an der [TH Rosenheim](https://www.th-rosenheim.de) im Modul **Software Qualitätssicherung** entstanden ist.
+Welcome to _SoftwareQualityWithCats_, a project that was developed in the second semester of my Masters's degree at the [TH Rosenheim](https://www.th-rosenheim.de) in the module **Software Quality Assurance**.
