@@ -1,3 +1,61 @@
 {
-  "extends": "next/core-web-vitals"
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "next",
+    "airbnb-typescript",
+    "eslint:recommended",
+    "plugin:jest/recommended",
+    "plugin:jsdoc/recommended-typescript",
+    "plugin:sonarjs/recommended",
+    "plugin:react/recommended",
+    "plugin:promise/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:eslint-plugin/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+    "plugin:prettier/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:unicorn/all",
+    "plugin:yml/recommended",
+    "plugin:perfectionist/recommended-natural",
+    "plugin:jsx-a11y/recommended"
+  ],
+  "plugins": [
+    "react",
+    "jest",
+    "jsdoc",
+    "sonarjs",
+    "promise",
+    "react-hooks",
+    "eslint-plugin",
+    "@typescript-eslint",
+    "prettier",
+    "import",
+    "unicorn",
+    "yml",
+    "perfectionist",
+    "jsx-a11y"
+  ],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "project": "./tsconfig.json"
+  },
+  "rules": {
+    "semi": "off",
+    "@typescript-eslint/semi": "off",
+    "react/react-in-jsx-scope": "off",
+    "prettier/prettier": ["error"],
+    "unicorn/filename-case": [
+      "error",
+      {
+        "case": "pascalCase"
+      }
+    ]
+  }
 }
