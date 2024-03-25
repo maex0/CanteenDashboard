@@ -22,7 +22,6 @@
     "plugin:import/warnings",
     "plugin:unicorn/all",
     "plugin:yml/recommended",
-    "plugin:perfectionist/recommended-natural",
     "plugin:jsx-a11y/recommended"
   ],
   "plugins": [
@@ -38,7 +37,6 @@
     "import",
     "unicorn",
     "yml",
-    "perfectionist",
     "jsx-a11y"
   ],
   "parserOptions": {
@@ -54,8 +52,9 @@
     "unicorn/filename-case": [
       "error",
       {
-        "case": "pascalCase"
+        "case": "camelCase"
       }
-    ]
+    ],
+    "quotes": ["error", "double"]
   }
 }
