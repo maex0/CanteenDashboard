@@ -12,8 +12,8 @@
     "lint:fix": "eslint 'src/**/*.{ts,tsx,yaml,yml}' --fix"
   },
   "lint-staged": {
-    "*.{ts,js}": "eslint --cache --fix",
-    "*.{ts,js,css,md}": "prettier --write",
+    "*.{ts,js,tsx,jsx}": "eslint --cache --fix",
+    "*.{ts,js,tsx,jsx,css,md}": "prettier --write",
     "*.js": "eslint --cache --fix",
     "*.{js,css,md}": "prettier --write"
   },
