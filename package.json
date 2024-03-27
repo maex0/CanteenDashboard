@@ -11,6 +11,12 @@
     "test": "jest",
     "lint:fix": "eslint 'src/**/*.{ts,tsx,yaml,yml}' --fix"
   },
+  "husky": {
+    "applypatch-msg": "echo \"[Husky] applypatch-msg\"",
+    "pre-applypatch": "echo \"[Husky] pre-applypatch\"",
+    "post-applypatch": "echo \"[Husky] post-applypatch\"",
+    "pre-commit": "echo \"[Husky] pre-commit\""
+  },
   "dependencies": {
     "next": "14.1.4",
     "react": "^18",
