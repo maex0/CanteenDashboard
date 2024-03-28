@@ -1,27 +1,29 @@
 import { NextResponse } from "next/server";
+import axios, { isAxiosError } from "axios";
+import Image from "../../types/image";
+
+const API_URL = "https://api.thecatapi.com/v1/";
 
 /**
- * `GET` is an asynchronous function that fetches data from TheCatAPI.
- * It specifically fetches a list of 10 random cat images.
+ * `GET` is an asynchronous function that fetches a random Cat image from TheCatAPI.
  * @returns A Promise that resolves to a NextResponse object containing the fetched data if the request is successful, or an object with an error message if the request fails.
- * @throws Throws an error if the fetch request fails.
+ * @throws Throws an error if the request fails.
  */
 export async function GET(): Promise<NextResponse> {
   try {
-    const response = await fetch(
-      "https://api.thecatapi.com/v1/images/search?limit=10",
-    );
-    console.log(response);
-    if (!response.ok) {
-      throw new Error("Failed to fetch data");
-    }
-    const data = await response.json();
+    const response = await axios.get(`${API_URL}images/search`);
 
-    return NextResponse.json(data);
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+    const catImage: Image = response.data[0];
+
+    return NextResponse.json(catImage);
+  } catch (error) {
+    if (isAxiosError(error)) {
+      const message = error.response
+        ? error.response.data
+        : "Failed to fetch data";
+      return NextResponse.json({ error: message }, { status: 500 });
     }
+
     return NextResponse.json(
       { error: "An unknown error occurred" },
       { status: 500 },
