@@ -16,7 +16,9 @@ enum Decision {
  */
 const Home: React.FC = () => {
   const [cat, setCat] = useState<Image>();
+  const [likedCats, setLikedCats] = useState<Image[]>([]);
   const [error, setError] = useState("");
+  const [progress, setProgress] = useState(0);
 
   const fetchRandomCat = async () => {
     setError("");
@@ -25,6 +27,22 @@ const Home: React.FC = () => {
       const catImage: Image = response.data;
       console.log(catImage);
       setCat(catImage);
+    } catch (error_) {
+      setError(String(error_));
+    }
+  };
+
+  const fetchRandomCats = async () => {
+    setError("");
+    try {
+      const responses = await Promise.all(
+        Array.from({ length: 3 })
+          .fill(0)
+          .map(() => axios.get("/api")),
+      );
+      const catImages: Image[] = responses.map((response) => response.data);
+      console.log(catImages);
+      setLikedCats(catImages);
     } catch (error_) {
       setError(String(error_));
     }
@@ -42,7 +60,24 @@ const Home: React.FC = () => {
   };
 
   useEffect(() => {
+    fetchRandomCats();
     fetchRandomCat();
+    const interval = setInterval(() => {
+      fetchRandomCats();
+      setProgress(0);
+    }, 10_000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setProgress((previousProgress) =>
+        previousProgress >= 100 ? 0 : previousProgress + 10,
+      );
+    }, 1000);
+    return () => {
+      clearInterval(timer);
+    };
   }, []);
 
   return (
@@ -102,6 +137,25 @@ const Home: React.FC = () => {
           >
             Dislike
           </Button>
+        </Box>
+        <h2>Liked Cats</h2>
+        <Box display="flex" justifyContent="center" mt={2}>
+          {likedCats.length > 0 ? (
+            likedCats.map((likedCat) => (
+              <img
+                key={likedCat.id}
+                src={likedCat.url}
+                alt="Cat"
+                style={{ width: "130px", height: "130px", margin: "0 10px" }}
+              />
+            ))
+          ) : (
+            <h3>No cats available</h3>
+          )}
+        </Box>
+        <Box display="flex" justifyContent="center" mt={2}>
+          <CircularProgress variant="determinate" value={progress} />
+          <span>Recent likes</span>
         </Box>
       </Box>
     </main>
