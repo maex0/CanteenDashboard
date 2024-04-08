@@ -12,4 +12,6 @@
 
 Welcome to _SoftwareQualityWithCats_, a project that was developed in the second semester of my Masters's degree at the [TH Rosenheim](https://www.th-rosenheim.de) in the module **Software Quality Assurance**.
 
+A detailed description of the architecture and structure of this project can be found in the [wiki](https://github.com/maex0/SoftwareQualityWithCats/wiki).
+
 The Cat API [https://thecatapi.com](https://thecatapi.com) will be used for this project.
