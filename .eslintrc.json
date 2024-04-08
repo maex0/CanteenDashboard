@@ -16,13 +16,13 @@
     "plugin:react-hooks/recommended",
     "plugin:eslint-plugin/recommended",
     "plugin:@typescript-eslint/recommended",
-    "prettier",
-    "plugin:prettier/recommended",
     "plugin:import/errors",
     "plugin:import/warnings",
     "plugin:unicorn/all",
     "plugin:yml/recommended",
-    "plugin:jsx-a11y/recommended"
+    "plugin:jsx-a11y/recommended",
+    "prettier",
+    "plugin:prettier/recommended"
   ],
   "plugins": [
     "react",
@@ -54,7 +54,6 @@
       {
         "case": "camelCase"
       }
-    ],
-    "quotes": ["error", "double"]
+    ]
   }
 }
