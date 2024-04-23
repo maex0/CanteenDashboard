@@ -4,7 +4,8 @@ import React, { useEffect, useState } from "react";
 import styles from "./page.module.css";
 import axios from "axios";
 import { Box, Button, CircularProgress } from "@mui/material";
-import Image from "../types/image";
+import CatImage from "../types/image";
+import Image from "next/image";
 
 enum Decision {
   Like,
@@ -15,8 +16,8 @@ enum Decision {
  * @returns home page
  */
 const Home: React.FC = () => {
-  const [cat, setCat] = useState<Image>();
-  const [likedCats, setLikedCats] = useState<Image[]>([]);
+  const [cat, setCat] = useState<CatImage>();
+  const [likedCats, setLikedCats] = useState<CatImage[]>([]);
   const [error, setError] = useState("");
   const [progress, setProgress] = useState(0);
 
@@ -24,8 +25,7 @@ const Home: React.FC = () => {
     setError("");
     try {
       const response = await axios.get("/api");
-      const catImage: Image = response.data;
-      console.log(catImage);
+      const catImage: CatImage = response.data;
       setCat(catImage);
     } catch (error_) {
       setError(String(error_));
@@ -40,7 +40,7 @@ const Home: React.FC = () => {
           .fill(0)
           .map(() => axios.get("/api")),
       );
-      const catImages: Image[] = responses.map((response) => response.data);
+      const catImages: CatImage[] = responses.map((response) => response.data);
       console.log(catImages);
       setLikedCats(catImages);
     } catch (error_) {
@@ -93,11 +93,13 @@ const Home: React.FC = () => {
 
         <div className={styles.cats}>
           {cat ? (
-            <img
+            <Image
+              unoptimized={true}
               key={cat.id}
               src={cat.url}
               alt="Cat"
-              style={{ width: "400px", height: "400px" }}
+              width={cat.width}
+              height={cat.height}
             />
           ) : (
             <>
@@ -142,11 +144,13 @@ const Home: React.FC = () => {
         <Box display="flex" justifyContent="center" mt={2}>
           {likedCats.length > 0 ? (
             likedCats.map((likedCat) => (
-              <img
+              <Image
+                unoptimized={true}
                 key={likedCat.id}
                 src={likedCat.url}
                 alt="Cat"
-                style={{ width: "130px", height: "130px", margin: "0 10px" }}
+                width={likedCat.width}
+                height={likedCat.height}
               />
             ))
           ) : (
