@@ -38,11 +38,6 @@ const Home: React.FC = () => {
     }
   };
 
-  const loadLastThreeLikedCats = () => {
-    // todo db conneciton
-    return threeRecentLikedCats;
-  };
-
   const vote = (decision: Decision) => {
     setError("");
     try {
@@ -66,8 +61,7 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     fetchRandomCat();
-    loadLastThreeLikedCats();
-  });
+  }, []);
 
   return (
     <main className={styles.main}>
