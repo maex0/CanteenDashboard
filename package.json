@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "prepare": "husky",
-    "test": "jest",
+    "test": "jest tests/unit && npx playwright test",
+    "test:jest": "jest tests/unit",
+    "test:e2e": "npx playwright test",
     "lint:fix": "eslint 'src/**/*.{ts,tsx,yaml,yml}' --fix"
   },
   "lint-staged": {

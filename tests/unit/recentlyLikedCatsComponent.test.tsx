@@ -1,15 +1,13 @@
-/* eslint-disable jsdoc/check-tag-names */
 /**
  * @jest-environment jsdom
  */
 
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import "@testing-library/jest-dom";
-import RecentlyLikedCatsComponent from "./recentlyLikedCatsComponent";
-import CatImageComponent from "./catImageComponent";
+import RecentlyLikedCatsComponent from "../../src/components/recentlyLikedCatsComponent";
+import CatImageComponent from "../../src/components/catImageComponent";
 
-jest.mock("./CatImageComponent", () => {
+jest.mock("../../src/CatImageComponent", () => {
   return jest.fn(() => {});
 });
 

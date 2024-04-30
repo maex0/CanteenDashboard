@@ -1,4 +1,3 @@
-/* eslint-disable jsdoc/check-tag-names */
 /**
  * @jest-environment jsdom
  */
@@ -7,7 +6,7 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import CatImage from "@/types/catImage";
 import "@testing-library/jest-dom";
-import CatImageComponent from "./catImageComponent";
+import CatImageComponent from "../../src/components/catImageComponent";
 
 describe("CatImageComponent", () => {
   it("displays loading spinner when cat is undefined", () => {

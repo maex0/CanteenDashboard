@@ -1,4 +1,3 @@
-/* eslint-disable jsdoc/check-tag-names */
 /**
  * @jest-environment jsdom
  */
@@ -8,7 +7,7 @@ import { render, fireEvent, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import React from "react";
 import axios from "axios";
-import Home from "./page";
+import Home from "../../src/app/page";
 
 jest.mock("axios");
 
