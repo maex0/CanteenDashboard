@@ -26,7 +26,7 @@ The team (myself) identified a need for a framework that can seamlessly handle b
 
 ### Personal Motivation:
 
-I have experience with React but not with Next.js (which is build on top of React). I want to learn Next.js because of its cool features mentioned above and could need it for private projects.
+I have experience with React but not with Next.js (which is build on top of React). I want to learn Next.js because of its cool features mentioned above and I want to use it for private projects.
 
 ## Decision:
 
