@@ -20,7 +20,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build
-          path: .next/
+          path: next/.next/
 
   sonarqube:
     name: SonarQube
@@ -51,7 +51,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: build
-          path: .next/
+          path: next/.next/
       - name: Install dependencies
         run: npm ci
       - name: Install Playwright Browsers
