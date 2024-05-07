@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prepare": "husky",
+    "prepare": "if [ \"$NODE_ENV\" != \"production\" ]; then husky install; fi",
     "test": "jest",
     "lint:fix": "eslint 'src/**/*.{ts,tsx,yaml,yml}' --fix"
   },
