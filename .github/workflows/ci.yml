@@ -64,7 +64,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: next/playwright-report
+          name: playwright-report
           path: next/playwright-report/
           retention-days: 30
 
