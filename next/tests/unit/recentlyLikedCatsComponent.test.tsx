@@ -7,7 +7,7 @@ import { render, screen } from "@testing-library/react";
 import RecentlyLikedCatsComponent from "../../src/components/recentlyLikedCatsComponent";
 import CatImageComponent from "../../src/components/catImageComponent";
 
-jest.mock("../../src/CatImageComponent", () => {
+jest.mock("../../src/components/catImageComponent", () => {
   return jest.fn(() => {});
 });
 
