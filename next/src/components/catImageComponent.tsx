@@ -20,6 +20,7 @@ const CatImageComponent: React.FC<{ cat: CatImage | undefined }> = ({ cat }) =>
     >
       <Image
         unoptimized={true}
+        id="maincatimage"
         key={cat.id}
         src={cat.url}
         alt="Cat"

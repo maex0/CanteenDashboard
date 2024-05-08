@@ -72,7 +72,7 @@ const Home: React.FC = () => {
         minHeight="100vh"
         flexDirection="column"
       >
-        <h1>Tinder for Cats 🐈 ❤️</h1>
+        <h1 id="mainheading">Tinder for Cats 🐈 ❤️</h1>
 
         <div className={styles.cats}>
           <CatImageComponent cat={cat} />
