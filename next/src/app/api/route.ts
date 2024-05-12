@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import axios, { isAxiosError } from "axios";
-import Image from "../../types/image";
+import CatImage from "../../types/catImage";
 
 const API_URL = "https://api.thecatapi.com/v1/";
 
@@ -13,7 +13,7 @@ export async function GET(): Promise<NextResponse> {
   try {
     const response = await axios.get(`${API_URL}images/search`);
 
-    const catImage: Image = response.data[0];
+    const catImage: CatImage = response.data[0];
 
     return NextResponse.json(catImage);
   } catch (error) {

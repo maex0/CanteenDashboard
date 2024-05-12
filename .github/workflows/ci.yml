@@ -3,7 +3,7 @@ on: [push, pull_request]
 jobs:
   build:
     name: Build
-    timeout-minutes: 5
+    timeout-minutes: 3
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -25,7 +25,7 @@ jobs:
   sonarqube:
     name: SonarQube
     needs: build
-    timeout-minutes: 5
+    timeout-minutes: 3
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -37,10 +37,10 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
 
-  test:
-    name: Test
+  e2e-test:
+    name: E2E Test
     needs: build
-    timeout-minutes: 5
+    timeout-minutes: 7
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -68,9 +68,54 @@ jobs:
           path: next/playwright-report/
           retention-days: 30
 
+  unit-test:
+    name: Unit Test
+    needs: build
+    timeout-minutes: 7
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build
+          path: next/.next/
+      - name: Install dependencies
+        working-directory: next
+        run: npm ci
+      - name: Run unit tests
+        working-directory: next
+        run: npm run test:unit
+
+  # acceptance-test:
+  #   name: Acceptance Test
+  #   needs: build
+  #   timeout-minutes: 7
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: lts/*
+  #     - name: Download build artifact
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: build
+  #         path: next/.next/
+  #     - name: Install dependencies
+  #       working-directory: next
+  #       run: npm ci
+  #     - name: Run acceptance tests
+  #       working-directory: next
+  #       run: npm run test:acceptance
+
   trufflehog:
     needs: build
     name: Scan for secrets
+    timeout-minutes: 3
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code

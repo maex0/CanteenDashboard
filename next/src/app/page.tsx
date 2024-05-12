@@ -3,48 +3,38 @@
 import React, { useEffect, useState } from "react";
 import styles from "./page.module.css";
 import axios from "axios";
-import { Box, Button, CircularProgress } from "@mui/material";
-import Image from "../types/image";
+import { Box, Button } from "@mui/material";
+import CatImage from "../types/catImage";
+import CatImageComponent from "@/components/catImageComponent";
+import RecentlyLikedCatsComponent from "@/components/recentlyLikedCatsComponent";
 
 enum Decision {
   Like,
   Dislike,
 }
 
+const MAX_LIKED_CAT_IMAGES = 3;
+
 /**
  * @returns home page
  */
 const Home: React.FC = () => {
-  const [cat, setCat] = useState<Image>();
-  const [likedCats, setLikedCats] = useState<Image[]>([]);
+  const [cat, setCat] = useState<CatImage>();
+  const [threeRecentLikedCats, setThreeRecentLikedCats] = useState<CatImage[]>(
+    [],
+  );
   const [error, setError] = useState("");
-  const [progress, setProgress] = useState(0);
 
   const fetchRandomCat = async () => {
     setError("");
     try {
       const response = await axios.get("/api");
-      const catImage: Image = response.data;
-      console.log(catImage);
+      const catImage: CatImage = response.data;
       setCat(catImage);
+      return catImage;
     } catch (error_) {
       setError(String(error_));
-    }
-  };
-
-  const fetchRandomCats = async () => {
-    setError("");
-    try {
-      const responses = await Promise.all(
-        Array.from({ length: 3 })
-          .fill(0)
-          .map(() => axios.get("/api")),
-      );
-      const catImages: Image[] = responses.map((response) => response.data);
-      console.log(catImages);
-      setLikedCats(catImages);
-    } catch (error_) {
-      setError(String(error_));
+      return;
     }
   };
 
@@ -57,27 +47,20 @@ const Home: React.FC = () => {
     } catch (error_) {
       setError(String(error_));
     }
+
+    if (decision == Decision.Like && cat) {
+      if (threeRecentLikedCats.length >= MAX_LIKED_CAT_IMAGES) {
+        threeRecentLikedCats.pop();
+        const updatedThreeRecentLikedCats = [cat, ...threeRecentLikedCats];
+        setThreeRecentLikedCats(updatedThreeRecentLikedCats);
+      } else {
+        threeRecentLikedCats.push(cat);
+      }
+    }
   };
 
   useEffect(() => {
-    fetchRandomCats();
     fetchRandomCat();
-    const interval = setInterval(() => {
-      fetchRandomCats();
-      setProgress(0);
-    }, 10_000);
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress((previousProgress) =>
-        previousProgress >= 100 ? 0 : previousProgress + 10,
-      );
-    }, 1000);
-    return () => {
-      clearInterval(timer);
-    };
   }, []);
 
   return (
@@ -89,22 +72,10 @@ const Home: React.FC = () => {
         minHeight="100vh"
         flexDirection="column"
       >
-        <h1>Tinder for Cats 🐈 ❤️</h1>
+        <h1 id="mainheading">Tinder for Cats 🐈 ❤️</h1>
 
         <div className={styles.cats}>
-          {cat ? (
-            <img
-              key={cat.id}
-              src={cat.url}
-              alt="Cat"
-              style={{ width: "400px", height: "400px" }}
-            />
-          ) : (
-            <>
-              <CircularProgress />
-              <span>Loading...</span>
-            </>
-          )}
+          <CatImageComponent cat={cat} />
           {error && <p>Error: {error}</p>}
         </div>
 
@@ -140,22 +111,7 @@ const Home: React.FC = () => {
         </Box>
         <h2>Liked Cats</h2>
         <Box display="flex" justifyContent="center" mt={2}>
-          {likedCats.length > 0 ? (
-            likedCats.map((likedCat) => (
-              <img
-                key={likedCat.id}
-                src={likedCat.url}
-                alt="Cat"
-                style={{ width: "130px", height: "130px", margin: "0 10px" }}
-              />
-            ))
-          ) : (
-            <h3>No cats available</h3>
-          )}
-        </Box>
-        <Box display="flex" justifyContent="center" mt={2}>
-          <CircularProgress variant="determinate" value={progress} />
-          <span>Recent likes</span>
+          <RecentlyLikedCatsComponent cats={threeRecentLikedCats} />
         </Box>
       </Box>
     </main>
