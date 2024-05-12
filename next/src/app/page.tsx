@@ -30,7 +30,7 @@ const Home: React.FC = () => {
   const fetchRandomCat = async () => {
     setError("");
     try {
-      const response = await axios.get("/api");
+      const response = await axios.get("/api/catimageapi");
       const catImage: CatImage = response.data;
       setCat(catImage);
       return catImage;
