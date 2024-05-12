@@ -16,6 +16,8 @@ enum Decision {
 const MAX_LIKED_CAT_IMAGES = 3;
 
 /**
+ * `Home` is the home page of the application.
+ *
  * @returns home page
  */
 const Home: React.FC = () => {
@@ -38,12 +40,10 @@ const Home: React.FC = () => {
     }
   };
 
-  const vote = (decision: Decision) => {
+  const vote = async (decision: Decision) => {
     setError("");
     try {
-      console.log(decision);
-      //await axios.post("/api", { like: decision });
-      fetchRandomCat();
+      await fetchRandomCat();
     } catch (error_) {
       setError(String(error_));
     }
@@ -109,7 +109,7 @@ const Home: React.FC = () => {
             Dislike
           </Button>
         </Box>
-        <h2>Liked Cats</h2>
+        <h2>Three recent liked cats</h2>
         <Box display="flex" justifyContent="center" mt={2}>
           <RecentlyLikedCatsComponent cats={threeRecentLikedCats} />
         </Box>
