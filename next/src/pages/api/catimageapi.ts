@@ -1,5 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { NextResponse } from "next/server";
 import axios from "axios";
 import CatImage from "../../types/catImage";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -12,9 +10,8 @@ const API_URL = "https://api.thecatapi.com/v1/";
  * @throws Throws an error if the request fails.
  */
 export default async function GET(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  req: NextApiRequest,
-  res: NextApiResponse<CatImage>,
+  _req: NextApiRequest,
+  res: NextApiResponse<CatImage | string>,
 ) {
   try {
     const response = await axios.get(`${API_URL}images/search`);
@@ -27,9 +24,9 @@ export default async function GET(
       const message = error.response
         ? error.response.data
         : "Failed to fetch data";
-      res.status(500).json({ error: message });
+      res.status(500).json(message);
     } else {
-      res.status(500).json({ error: "An unknown error occurred" });
+      res.status(500).json("An unknown error occurred");
     }
   }
 }
