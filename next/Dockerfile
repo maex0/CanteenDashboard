@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install all dependencies in the base stage
-RUN npm install
+RUN npm install --ignore-scripts
 
 # Copy all project files to the base stage
 COPY . .
@@ -26,7 +26,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install only production dependencies
-RUN npm ci --omit=dev
+RUN npm ci --omit=dev --ignore-scripts
 
 # Copy production artifacts from the base stage
 COPY --from=base /app/.next ./.next
