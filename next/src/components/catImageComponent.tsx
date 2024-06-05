@@ -24,8 +24,8 @@ const CatImageComponent: React.FC<{ cat: CatImage | undefined }> = ({ cat }) =>
         key={cat.id}
         src={cat.url}
         alt="Cat"
-        width={cat.width}
-        height={cat.height}
+        layout="fill"
+        objectFit="contain"
       />
     </div>
   ) : (
