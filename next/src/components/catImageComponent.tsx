@@ -3,9 +3,8 @@ import CatImage from "../types/catImage";
 import Image from "next/image";
 import React from "react";
 
-// Define the target size
-const targetWidth = 500; // Target width in pixels
-const targetHeight = 500; // Target height in pixels
+const targetWidth = 300;
+const targetHeight = 300;
 
 const CatImageComponent: React.FC<{ cat: CatImage | undefined }> = ({ cat }) =>
   cat ? (
@@ -24,8 +23,14 @@ const CatImageComponent: React.FC<{ cat: CatImage | undefined }> = ({ cat }) =>
         key={cat.id}
         src={cat.url}
         alt="Cat"
-        layout="fill"
-        objectFit="contain"
+        width={cat.width}
+        height={cat.height}
+        style={{
+          width: "100%",
+          height: "auto",
+        }}
+        loading="lazy"
+        objectFit="cover"
       />
     </div>
   ) : (
