@@ -29,8 +29,7 @@ const CatImageComponent: React.FC<{ cat: CatImage | undefined }> = ({ cat }) =>
           width: "100%",
           height: "auto",
         }}
-        loading="lazy"
-        objectFit="cover"
+        priority={true}
       />
     </div>
   ) : (

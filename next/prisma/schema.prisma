@@ -8,9 +8,9 @@ datasource db {
 }
 
 model CatImage {
-  id Int @id
+  id String @id
   url String
   width Int
   height Int
-  mime_type String
+  createdAt DateTime @default(now())
 }

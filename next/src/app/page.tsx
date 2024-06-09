@@ -13,7 +13,9 @@ enum Decision {
   Dislike,
 }
 
-const MAX_LIKED_CAT_IMAGES = 3;
+const MAX_LIKED_CAT_IMAGES = process.env.MAX_LIKED_CAT_IMAGES
+  ? parseInt(process.env.MAX_LIKED_CAT_IMAGES)
+  : 3;
 
 /**
  * `Home` is the home page of the application.
@@ -25,41 +27,62 @@ const Home: React.FC = () => {
   const [threeRecentLikedCats, setThreeRecentLikedCats] = useState<CatImage[]>(
     [],
   );
-  const [error, setError] = useState("");
 
   const fetchRandomCat = async () => {
-    setError("");
     try {
       const response = await axios.get("/api/catimageapi");
       const catImage: CatImage = response.data;
       setCat(catImage);
       return catImage;
     } catch (error_) {
-      setError(String(error_));
       return;
     }
   };
 
   const vote = async (decision: Decision) => {
-    setError("");
     try {
       await fetchRandomCat();
     } catch (error_) {
-      setError(String(error_));
+      return;
     }
 
     if (decision == Decision.Like && cat) {
-      if (threeRecentLikedCats.length >= MAX_LIKED_CAT_IMAGES) {
-        threeRecentLikedCats.pop();
-        const updatedThreeRecentLikedCats = [cat, ...threeRecentLikedCats];
-        setThreeRecentLikedCats(updatedThreeRecentLikedCats);
-      } else {
-        threeRecentLikedCats.push(cat);
+      try {
+        const response = await axios.post("/api/catimagedb", cat);
+
+        if (response.status === 201) {
+          if (threeRecentLikedCats.length >= MAX_LIKED_CAT_IMAGES) {
+            threeRecentLikedCats.pop();
+            const updatedThreeRecentLikedCats = [cat, ...threeRecentLikedCats];
+            setThreeRecentLikedCats(updatedThreeRecentLikedCats);
+          } else {
+            threeRecentLikedCats.push(cat);
+          }
+        } else {
+          return;
+        }
+      } catch (error_) {
+        return;
       }
     }
   };
 
+  const loadRecentlyLikedCats = async () => {
+    try {
+      const response = await axios.get("/api/catimagedb");
+
+      if (response.status !== 200) {
+        return;
+      }
+      const catImages: CatImage[] = response.data;
+      setThreeRecentLikedCats(catImages.slice(0, MAX_LIKED_CAT_IMAGES));
+    } catch (error_) {
+      return;
+    }
+  };
+
   useEffect(() => {
+    loadRecentlyLikedCats();
     fetchRandomCat();
   }, []);
 
@@ -76,7 +99,6 @@ const Home: React.FC = () => {
 
         <div className={styles.cats}>
           <CatImageComponent cat={cat} />
-          {error && <p>Error: {error}</p>}
         </div>
 
         <Box display="flex" justifyContent="center" mt={2}>
