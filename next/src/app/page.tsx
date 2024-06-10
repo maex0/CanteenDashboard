@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import styles from "./page.module.css";
 import axios from "axios";
 import { Box, Button } from "@mui/material";
 import CatImage from "../types/catImage";
@@ -87,7 +86,7 @@ const Home: React.FC = () => {
   }, []);
 
   return (
-    <main className={styles.main}>
+    <main>
       <Box
         display="flex"
         justifyContent="center"
@@ -97,7 +96,7 @@ const Home: React.FC = () => {
       >
         <h1 id="mainheading">Tinder for Cats 🐈 ❤️</h1>
 
-        <div className={styles.cats}>
+        <div>
           <CatImageComponent cat={cat} />
         </div>
 
