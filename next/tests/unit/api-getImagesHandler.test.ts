@@ -4,7 +4,7 @@
 
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../src/lib/prisma";
-import handler from "../../src/pages/api/catimagedb";
+import handler from "../../src/pages/api/api-catImagesHandler";
 import { CatImage } from "@prisma/client";
 
 jest.mock("../../src/lib/prisma", () => ({

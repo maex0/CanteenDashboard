@@ -5,7 +5,7 @@ import axios from "axios";
 import { Box, Button } from "@mui/material";
 import CatImage from "../types/catImage";
 import CatImageComponent from "@/components/catImageComponent";
-import RecentlyLikedCatsComponent from "@/components/recentlyLikedCatsComponent";
+import RecentlyLikedCatsComponent from "@/components/likedCatsComponent";
 
 enum Decision {
   Like,

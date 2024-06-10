@@ -5,7 +5,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
 import CatImage from "../../src/types/catImage";
-import handler from "../../src/pages/api/catimageapi";
+import handler from "../../src/pages/api/api-getRandomCatImage";
 
 jest.mock("axios");
 
