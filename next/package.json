@@ -8,7 +8,7 @@
     "start": "next start",
     "prepare": "if [ \"$NODE_ENV\" != \"production\" ]; then husky install; fi",
     "test": "jest tests/unit && npx playwright test && npx cucumber-js",
-    "test:unit": "jest tests/unit",
+    "test:unit": "jest tests/unit --silent",
     "test:unit:coverage": "jest tests/unit --coverage",
     "test:e2e": "npx playwright test",
     "test:acceptance": "npx cucumber-js",
@@ -30,7 +30,7 @@
     "@mui/styled-engine-sc": "^6.0.0-alpha.18",
     "@prisma/client": "^5.15.0",
     "axios": "^1.6.8",
-    "next": "14.1.4",
+    "next": "^15.0.0-canary.22",
     "react": "^18",
     "react-dom": "^18",
     "styled-components": "^6.1.8"
