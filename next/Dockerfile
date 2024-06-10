@@ -41,6 +41,9 @@ RUN npm run build
 # Production Image (final stage)
 FROM node:18-alpine AS prod
 
+# Create a non-root user and group
+RUN addgroup -S nonroot && adduser -S nonroot -G nonroot
+
 # Set working directory
 WORKDIR /app
 
@@ -48,10 +51,10 @@ WORKDIR /app
 COPY package*.json ./
 
 # Change ownership of the package files to the non-root user
-RUN chown -R node:node /app
+RUN chown -R nonroot:nonroot /app
 
 # Switch to the non-root user
-USER node
+USER nonroot
 
 # Install only production dependencies
 RUN npm ci --omit=dev --ignore-scripts
@@ -67,7 +70,34 @@ EXPOSE 3000
 CMD ["npm", "run", "start"]
 
 # Development Image
-FROM base AS dev
+FROM node:18-alpine AS dev
+
+# Create a non-root user and group
+RUN addgroup -S nonroot && adduser -S nonroot -G nonroot
+
+# Set working directory
+WORKDIR /app
+
+# Copy package.json files
+COPY package*.json ./
+
+# Change ownership of the package files to the non-root user
+RUN chown -R nonroot:nonroot /app
+
+# Switch to the non-root user
+USER nonroot
+
+# Copy only necessary files for the build
+COPY src ./src
+COPY prisma ./prisma
+COPY next.config.mjs ./
+COPY tsconfig.json ./
+
+# Install all dependencies
+RUN npm install --ignore-scripts
+
+# Generate Prisma Client
+RUN npx prisma generate
 
 # Set the environment variable for development mode
 ENV NODE_ENV=development
