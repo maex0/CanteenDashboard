@@ -26,6 +26,7 @@ jobs:
     name: SonarQube
     needs: build
     timeout-minutes: 3
+    working-directory: next
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
