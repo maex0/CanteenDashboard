@@ -1,17 +1,39 @@
 # Base Node.js image for building
 FROM node:18-alpine AS base
 
+# Create a non-root user and group
+RUN addgroup -S nonroot && adduser -S nonroot -G nonroot
+
 # Set working directory
 WORKDIR /app
 
 # Copy package files to the base stage
 COPY package*.json ./
 
-# Install all dependencies in the base stage
-RUN npm install
+# Change ownership of the package files to the non-root user
+RUN chown -R nonroot:nonroot /app
 
-# Copy all project files to the base stage
-COPY . .
+# Switch to the non-root user
+USER nonroot
+
+# Install all dependencies in the base stage
+RUN npm install --ignore-scripts
+
+# Copy only necessary files for the build
+COPY src ./src
+COPY prisma ./prisma
+COPY next.config.mjs ./
+COPY tsconfig.json ./
+
+# Change ownership of all files to non-root user
+USER root
+RUN chown -R nonroot:nonroot /app
+
+# Switch back to non-root user
+USER nonroot
+
+# Generate Prisma Client
+RUN npx prisma generate
 
 # Build the Next.js app
 RUN npm run build
@@ -19,14 +41,23 @@ RUN npm run build
 # Production Image (final stage)
 FROM node:18-alpine AS prod
 
+# Create a non-root user and group
+RUN addgroup -S nonroot && adduser -S nonroot -G nonroot
+
 # Set working directory
 WORKDIR /app
 
 # Copy package.json files
 COPY package*.json ./
 
+# Change ownership of the package files to the non-root user
+RUN chown -R nonroot:nonroot /app
+
+# Switch to the non-root user
+USER nonroot
+
 # Install only production dependencies
-RUN npm ci --omit=dev
+RUN npm ci --omit=dev --ignore-scripts
 
 # Copy production artifacts from the base stage
 COPY --from=base /app/.next ./.next
@@ -39,7 +70,34 @@ EXPOSE 3000
 CMD ["npm", "run", "start"]
 
 # Development Image
-FROM base AS dev
+FROM node:18-alpine AS dev
+
+# Create a non-root user and group
+RUN addgroup -S nonroot && adduser -S nonroot -G nonroot
+
+# Set working directory
+WORKDIR /app
+
+# Copy package.json files
+COPY package*.json ./
+
+# Change ownership of the package files to the non-root user
+RUN chown -R nonroot:nonroot /app
+
+# Switch to the non-root user
+USER nonroot
+
+# Copy only necessary files for the build
+COPY src ./src
+COPY prisma ./prisma
+COPY next.config.mjs ./
+COPY tsconfig.json ./
+
+# Install all dependencies
+RUN npm install --ignore-scripts
+
+# Generate Prisma Client
+RUN npx prisma generate
 
 # Set the environment variable for development mode
 ENV NODE_ENV=development

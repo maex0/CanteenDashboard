@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import styles from "./page.module.css";
 import axios from "axios";
 import { Box, Button } from "@mui/material";
 import CatImage from "../types/catImage";
@@ -13,9 +12,13 @@ enum Decision {
   Dislike,
 }
 
-const MAX_LIKED_CAT_IMAGES = 3;
+const MAX_LIKED_CAT_IMAGES = process.env.MAX_LIKED_CAT_IMAGES
+  ? parseInt(process.env.MAX_LIKED_CAT_IMAGES)
+  : 3;
 
 /**
+ * `Home` is the home page of the application.
+ *
  * @returns home page
  */
 const Home: React.FC = () => {
@@ -23,48 +26,67 @@ const Home: React.FC = () => {
   const [threeRecentLikedCats, setThreeRecentLikedCats] = useState<CatImage[]>(
     [],
   );
-  const [error, setError] = useState("");
 
   const fetchRandomCat = async () => {
-    setError("");
     try {
-      const response = await axios.get("/api");
+      const response = await axios.get("/api/catimageapi");
       const catImage: CatImage = response.data;
       setCat(catImage);
       return catImage;
     } catch (error_) {
-      setError(String(error_));
       return;
     }
   };
 
-  const vote = (decision: Decision) => {
-    setError("");
+  const vote = async (decision: Decision) => {
     try {
-      console.log(decision);
-      //await axios.post("/api", { like: decision });
-      fetchRandomCat();
+      await fetchRandomCat();
     } catch (error_) {
-      setError(String(error_));
+      return;
     }
 
     if (decision == Decision.Like && cat) {
-      if (threeRecentLikedCats.length >= MAX_LIKED_CAT_IMAGES) {
-        threeRecentLikedCats.pop();
-        const updatedThreeRecentLikedCats = [cat, ...threeRecentLikedCats];
-        setThreeRecentLikedCats(updatedThreeRecentLikedCats);
-      } else {
-        threeRecentLikedCats.push(cat);
+      try {
+        const response = await axios.post("/api/catimagedb", cat);
+
+        if (response.status === 201) {
+          if (threeRecentLikedCats.length >= MAX_LIKED_CAT_IMAGES) {
+            threeRecentLikedCats.pop();
+            const updatedThreeRecentLikedCats = [cat, ...threeRecentLikedCats];
+            setThreeRecentLikedCats(updatedThreeRecentLikedCats);
+          } else {
+            threeRecentLikedCats.push(cat);
+          }
+        } else {
+          return;
+        }
+      } catch (error_) {
+        return;
       }
     }
   };
 
+  const loadRecentlyLikedCats = async () => {
+    try {
+      const response = await axios.get("/api/catimagedb");
+
+      if (response.status !== 200) {
+        return;
+      }
+      const catImages: CatImage[] = response.data;
+      setThreeRecentLikedCats(catImages.slice(0, MAX_LIKED_CAT_IMAGES));
+    } catch (error_) {
+      return;
+    }
+  };
+
   useEffect(() => {
+    loadRecentlyLikedCats();
     fetchRandomCat();
   }, []);
 
   return (
-    <main className={styles.main}>
+    <main>
       <Box
         display="flex"
         justifyContent="center"
@@ -74,9 +96,8 @@ const Home: React.FC = () => {
       >
         <h1 id="mainheading">Tinder for Cats 🐈 ❤️</h1>
 
-        <div className={styles.cats}>
+        <div>
           <CatImageComponent cat={cat} />
-          {error && <p>Error: {error}</p>}
         </div>
 
         <Box display="flex" justifyContent="center" mt={2}>
@@ -109,7 +130,7 @@ const Home: React.FC = () => {
             Dislike
           </Button>
         </Box>
-        <h2>Liked Cats</h2>
+        <h2>Three recent liked cats</h2>
         <Box display="flex" justifyContent="center" mt={2}>
           <RecentlyLikedCatsComponent cats={threeRecentLikedCats} />
         </Box>

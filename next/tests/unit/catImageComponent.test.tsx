@@ -22,8 +22,6 @@ describe("CatImageComponent", () => {
       url: "http://example.com/cat.jpg",
       width: 100,
       height: 100,
-      mime_type: "",
-      breeds: [],
     };
 
     render(<CatImageComponent cat={cat} />);

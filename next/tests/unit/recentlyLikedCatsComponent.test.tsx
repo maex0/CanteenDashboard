@@ -6,6 +6,7 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import RecentlyLikedCatsComponent from "../../src/components/recentlyLikedCatsComponent";
 import CatImageComponent from "../../src/components/catImageComponent";
+import CatImage from "@/types/catImage";
 
 jest.mock("../../src/components/catImageComponent", () => {
   return jest.fn(() => {});
@@ -23,22 +24,18 @@ describe("RecentlyLikedCatsComponent", () => {
   });
 
   it("renders CatImageComponent for each cat in the array", () => {
-    const cats = [
+    const cats: CatImage[] = [
       {
         id: "cat1",
         url: "http://example.com/cat1.jpg",
         width: 100,
         height: 100,
-        mime_type: "",
-        breeds: [],
       },
       {
         id: "cat2",
         url: "http://example.com/cat2.jpg",
         width: 100,
         height: 100,
-        mime_type: "",
-        breeds: [],
       },
       // Add more cats as needed
     ];
