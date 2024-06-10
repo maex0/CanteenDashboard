@@ -23,9 +23,9 @@ jobs:
           path: next/.next/
 
   sonarcloud:
-    name: SonarCloud
+    name: Unittests + SonarCloud
     needs: build
-    timeout-minutes: 3
+    timeout-minutes: 4
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -45,28 +45,6 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-
-  # unit-test:
-  #   name: Unit Test
-  #   needs: build
-  #   timeout-minutes: 7
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - uses: actions/setup-node@v4
-  #       with:
-  #         node-version: lts/*
-  #     - name: Download build artifact
-  #       uses: actions/download-artifact@v4
-  #       with:
-  #         name: build
-  #         path: next/.next/
-  #     - name: Install dependencies
-  #       working-directory: next
-  #       run: npm ci
-  #     - name: Run unit tests
-  #       working-directory: next
-  #       run: npm run test:unit
 
   # acceptance-test:
   #   name: Acceptance Test
