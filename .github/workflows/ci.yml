@@ -22,8 +22,8 @@ jobs:
   #         name: build
   #         path: next/.next/
 
-  sonarqube:
-    name: SonarQube
+  sonarcloud:
+    name: SonarCloud
     #needs: build
     timeout-minutes: 3
     runs-on: ubuntu-latest
