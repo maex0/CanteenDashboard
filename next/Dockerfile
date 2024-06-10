@@ -1,11 +1,20 @@
 # Base Node.js image for building
 FROM node:18-alpine AS base
 
+# Create a non-root user and group
+RUN addgroup -S nonroot && adduser -S nonroot -G nonroot
+
 # Set working directory
 WORKDIR /app
 
 # Copy package files to the base stage
 COPY package*.json ./
+
+# Change ownership of the package files to the non-root user
+RUN chown -R nonroot:nonroot /app
+
+# Switch to the non-root user
+USER nonroot
 
 # Install all dependencies in the base stage
 RUN npm install --ignore-scripts
@@ -15,6 +24,13 @@ COPY src ./src
 COPY prisma ./prisma
 COPY next.config.mjs ./
 COPY tsconfig.json ./
+
+# Change ownership of all files to non-root user
+USER root
+RUN chown -R nonroot:nonroot /app
+
+# Switch back to non-root user
+USER nonroot
 
 # Generate Prisma Client
 RUN npx prisma generate
@@ -30,6 +46,12 @@ WORKDIR /app
 
 # Copy package.json files
 COPY package*.json ./
+
+# Change ownership of the package files to the non-root user
+RUN chown -R node:node /app
+
+# Switch to the non-root user
+USER node
 
 # Install only production dependencies
 RUN npm ci --omit=dev --ignore-scripts
