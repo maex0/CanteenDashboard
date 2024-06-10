@@ -17,7 +17,8 @@ export default async function handler(
     if (!process.env.API_KEY) {
       res.status(500).json("API key is not set");
       return;
-    } else if (!process.env.API_URL) {
+    }
+    if (!process.env.API_URL) {
       res.status(500).json("API URL is not set");
       return;
     }
@@ -31,21 +32,24 @@ export default async function handler(
           },
         },
       );
-      const { id, url, width, height } = response.data[0];
-      const catImage: CatImage = { id, url, width, height };
+      const catImage: CatImage = response.data[0];
       res.status(200).send(catImage);
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        const message = error.response
-          ? error.response.data
-          : "Failed to fetch data";
-        res.status(error.response?.status ?? 500).json(message);
-      } else {
-        res.status(500).json("An unknown error occurred");
-      }
+      handleError(error, res);
     }
   } else {
     res.setHeader("Allow", ["GET"]);
     res.status(405).end(`Method ${req.method} Not Allowed`);
+  }
+}
+
+function handleError(error: any, res: NextApiResponse<string>) {
+  if (axios.isAxiosError(error)) {
+    const message = error.response
+      ? error.response.data
+      : "Failed to fetch data";
+    res.status(error.response?.status ?? 500).json(message);
+  } else {
+    res.status(500).json("An unknown error occurred");
   }
 }
