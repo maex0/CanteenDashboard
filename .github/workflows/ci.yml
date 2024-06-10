@@ -24,7 +24,7 @@ jobs:
 
   sonarcloud:
     name: SonarCloud
-    #needs: build
+    needs: build
     timeout-minutes: 3
     runs-on: ubuntu-latest
     steps:
