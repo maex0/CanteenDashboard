@@ -33,7 +33,19 @@ const config: Config = {
   coverageDirectory: "coverage",
 
   // An array of regexp pattern strings used to skip coverage collection
-  coveragePathIgnorePatterns: ["/node_modules/", "/tests/"],
+  coveragePathIgnorePatterns: [
+    "/node_modules/",
+    "/tests/",
+    "/eslint.config.mjs",
+    "/jest.config.ts",
+    "/jest.setup.js",
+    "/next.config.js",
+    "/tsconfig.json",
+    "/.eslintrc.js",
+    "/.babelrc.js",
+    "/.prettierrc.js",
+    "/.vscode/",
+  ],
 
   // Indicates which provider should be used to instrument code for coverage
   coverageProvider: "v8",
