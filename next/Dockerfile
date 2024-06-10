@@ -10,8 +10,14 @@ COPY package*.json ./
 # Install all dependencies in the base stage
 RUN npm install --ignore-scripts
 
-# Copy all project files to the base stage
-COPY . .
+# Copy only necessary files for the build
+COPY src ./src
+COPY prisma ./prisma
+COPY next.config.mjs ./
+COPY tsconfig.json ./
+
+# Generate Prisma Client
+RUN npx prisma generate
 
 # Build the Next.js app
 RUN npm run build
