@@ -130,7 +130,7 @@ These variables need to be set in order to run the application correctly.
 
 ## Contributing
 
-Contributions are welcome! Please follow the [contribution guidelines](CONTRIBUTING.md) when submitting pull requests.
+Contributions are welcome! Please follow the following contribution guidelines when submitting pull requests.
 
 1. Fork the repository.
 2. Create your feature branch:
