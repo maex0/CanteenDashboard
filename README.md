@@ -1,10 +1,12 @@
 # Software Quality with Cats
 
 ![GitHub Workflow Status](https://github.com/maex0/SoftwareQualityWithCats/actions/workflows/ci.yml/badge.svg)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=maex0_SoftwareQualityWithCats&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=maex0_SoftwareQualityWithCats)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=maex0_SoftwareQualityWithCats&metric=bugs)](https://sonarcloud.io/summary/new_code?id=maex0_SoftwareQualityWithCats)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=maex0_SoftwareQualityWithCats&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=maex0_SoftwareQualityWithCats)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=maex0_SoftwareQualityWithCats&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=maex0_SoftwareQualityWithCats)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=maex0_SoftwareQualityWithCats&metric=coverage)](https://sonarcloud.io/summary/new_code?id=maex0_SoftwareQualityWithCats)
+
+[![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=maex0_SoftwareQualityWithCats)](https://sonarcloud.io/summary/new_code?id=maex0_SoftwareQualityWithCats)
 
 ## Description
 
