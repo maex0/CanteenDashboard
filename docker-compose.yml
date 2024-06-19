@@ -7,8 +7,12 @@ services:
       target: prod
     environment:
       - NODE_ENV=production
+    env_file:
+      - ./next/.env.production
     ports:
       - '3000:3000'
+    networks:
+      - default
     restart: always
     depends_on:
       - db
@@ -21,6 +25,8 @@ services:
       target: dev
     environment:
       - NODE_ENV=development
+    env_file:
+      - ./next/.env.local
     ports:
       - '3001:3000'
     volumes:
@@ -39,3 +45,7 @@ services:
 
 volumes:
   pgdata:
+
+networks:
+  default:
+    driver: bridge

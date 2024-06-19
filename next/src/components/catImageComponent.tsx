@@ -1,5 +1,6 @@
 import { CircularProgress } from "@mui/material";
-import CatImage from "../types/catImage";
+import { CatImage } from "@prisma/client";
+
 import Image from "next/image";
 import React from "react";
 
@@ -22,14 +23,14 @@ const CatImageComponent: React.FC<{ cat: CatImage | undefined }> = ({ cat }) =>
         id="maincatimage"
         key={cat.id}
         src={cat.url}
-        alt="Cat"
+        alt="Cat image from TheCatAPI"
         width={cat.width}
         height={cat.height}
         style={{
           width: "100%",
           height: "auto",
         }}
-        priority={true}
+        priority
       />
     </div>
   ) : (

@@ -1,11 +1,11 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Box, Button } from "@mui/material";
-import CatImage from "../types/catImage";
+
 import CatImageComponent from "@/components/catImageComponent";
 import RecentlyLikedCatsComponent from "@/components/likedCatsComponent";
+import { CatImage } from "@prisma/client";
 
 enum Decision {
   Like,
@@ -29,7 +29,7 @@ const Home: React.FC = () => {
 
   const fetchRandomCat = async () => {
     try {
-      const response = await axios.get("/api/catimageapi");
+      const response = await axios.get("/api/getrandomcatimage");
       const catImage: CatImage = response.data;
       setCat(catImage);
       return catImage;
@@ -47,7 +47,7 @@ const Home: React.FC = () => {
 
     if (decision == Decision.Like && cat) {
       try {
-        const response = await axios.post("/api/catimagedb", cat);
+        const response = await axios.post("/api/catimageshandler", cat);
 
         if (response.status === 201) {
           if (threeRecentLikedCats.length >= MAX_LIKED_CAT_IMAGES) {
@@ -68,7 +68,7 @@ const Home: React.FC = () => {
 
   const loadRecentlyLikedCats = async () => {
     try {
-      const response = await axios.get("/api/catimagedb");
+      const response = await axios.get("/api/catimageshandler");
 
       if (response.status !== 200) {
         return;
