@@ -4,8 +4,8 @@
 
 import { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
-import CatImage from "../../src/types/catImage";
-import handler from "../../src/pages/api/api-getRandomCatImage";
+import handler from "../../src/pages/api/getrandomcatimage";
+import { CatImage } from "@prisma/client";
 
 jest.mock("axios");
 
@@ -36,6 +36,7 @@ describe("catimageapi", () => {
       url: "http://example.com/cat1.jpg",
       width: 500,
       height: 500,
+      createdAt: new Date(),
     };
 
     (axios.get as jest.Mock).mockResolvedValue({
