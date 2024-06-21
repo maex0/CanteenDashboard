@@ -4,7 +4,7 @@
 
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import RecentlyLikedCatsComponent from "../../src/components/recentlyLikedCatsComponent";
+import RecentlyLikedCatsComponent from "../../src/components/likedCatsComponent";
 import CatImageComponent from "../../src/components/catImageComponent";
 import CatImage from "@/types/catImage";
 

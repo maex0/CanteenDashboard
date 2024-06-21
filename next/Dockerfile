@@ -1,5 +1,5 @@
 # Base Node.js image for building
-FROM node:18-alpine AS base
+FROM node:22-alpine AS base
 
 # Create a non-root user and group
 RUN addgroup -S nonroot && adduser -S nonroot -G nonroot
@@ -35,6 +35,9 @@ USER nonroot
 # Generate Prisma Client
 RUN npx prisma generate
 
+# Set the environment variable for development mode
+ENV NODE_ENV=production
+
 # Build the Next.js app
 RUN npm run build
 
@@ -62,6 +65,9 @@ RUN npm ci --omit=dev --ignore-scripts
 # Copy production artifacts from the base stage
 COPY --from=base /app/.next ./.next
 COPY --from=base /app/node_modules ./node_modules
+
+# Copy the .env.local file
+COPY .env.production ./
 
 # Expose the port the Next.js server will run on
 EXPOSE 3000
@@ -101,6 +107,9 @@ RUN npx prisma generate
 
 # Set the environment variable for development mode
 ENV NODE_ENV=development
+
+# Copy the .env.local file
+COPY .env.local ./
 
 # Expose the port that Next.js will run on
 EXPOSE 3000

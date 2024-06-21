@@ -4,8 +4,8 @@
 
 import { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
-import CatImage from "../../src/types/catImage";
-import handler from "../../src/pages/api/catimageapi";
+import handler from "../../src/pages/api/getrandomcatimage";
+import { CatImage } from "@prisma/client";
 
 jest.mock("axios");
 
@@ -36,6 +36,7 @@ describe("catimageapi", () => {
       url: "http://example.com/cat1.jpg",
       width: 500,
       height: 500,
+      createdAt: new Date(),
     };
 
     (axios.get as jest.Mock).mockResolvedValue({
@@ -44,7 +45,14 @@ describe("catimageapi", () => {
 
     await handler(req, res);
     expect(res.status).toHaveBeenCalledWith(200);
-    expect(res.send).toHaveBeenCalledWith(mockCatImage);
+    expect(res.send).toHaveBeenCalledWith(
+      expect.objectContaining({
+        id: mockCatImage.id,
+        url: mockCatImage.url,
+        width: mockCatImage.width,
+        height: mockCatImage.height,
+      }),
+    );
   });
 
   it("should return an error if the API key is not set", async () => {

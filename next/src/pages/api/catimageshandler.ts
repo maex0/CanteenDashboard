@@ -1,4 +1,3 @@
-// pages/api/catImages.ts
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../lib/prisma";
 import { CatImage } from "@prisma/client";
@@ -8,7 +7,7 @@ const MAX_LIKED_CAT_IMAGES = process.env.MAX_LIKED_CAT_IMAGES
   : 3;
 
 /**
- * This function is the handler for the /api/catImages endpoint.
+ * This function is the handler for the /api/catimageshandler endpoint.
  * It supports GET and POST methods.
  *
  * GET: Fetches a list of cat images from the database, ordered by creation date in descending order.
@@ -35,8 +34,10 @@ export default async function handler(
         orderBy: { createdAt: "desc" },
         take: MAX_LIKED_CAT_IMAGES,
       });
+
       res.status(200).json(catImages);
     } catch (error) {
+      console.error(error);
       res.status(500).json({ error: "Failed to fetch cat images." });
     }
   } else if (req.method === "POST") {

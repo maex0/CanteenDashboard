@@ -1,6 +1,6 @@
-import CatImage from "../types/catImage";
 import React from "react";
 import CatImageComponent from "./catImageComponent";
+import { CatImage } from "@prisma/client";
 
 const RecentlyLikedCatsComponent: React.FC<{
   cats: CatImage[] | undefined;

@@ -1,5 +1,6 @@
-import axios from "axios";
-import CatImage from "../../types/catImage";
+import { CatImage } from "@prisma/client";
+import axios, { AxiosError } from "axios";
+
 import { NextApiRequest, NextApiResponse } from "next";
 
 /**
@@ -28,12 +29,23 @@ export default async function handler(
         `${process.env.API_URL}images/search?size=small&mime_types=jpg&format=json&has_breeds=false&order=RANDOM&limit=1`,
         {
           headers: {
+            "Content-Type": "application/json",
             "x-api-key": process.env.API_KEY,
           },
         },
       );
-      const catImage: CatImage = response.data[0];
-      res.status(200).send(catImage);
+
+      const catImage = response.data[0];
+
+      const myCatImage: CatImage = {
+        id: catImage.id,
+        url: catImage.url,
+        width: catImage.width,
+        height: catImage.height,
+        createdAt: new Date(),
+      };
+
+      res.status(200).send(myCatImage);
     } catch (error) {
       handleError(error, res);
     }
@@ -43,13 +55,17 @@ export default async function handler(
   }
 }
 
-function handleError(error: any, res: NextApiResponse<string>) {
-  if (axios.isAxiosError(error)) {
+function handleError(error: unknown, res: NextApiResponse<string>) {
+  if (isAxiosError(error)) {
     const message = error.response
-      ? error.response.data
+      ? String(error.response.data)
       : "Failed to fetch data";
     res.status(error.response?.status ?? 500).json(message);
   } else {
     res.status(500).json("An unknown error occurred");
   }
+}
+
+function isAxiosError(error: unknown): error is AxiosError {
+  return (error as AxiosError).isAxiosError !== undefined;
 }

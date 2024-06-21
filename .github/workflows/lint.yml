@@ -1,0 +1,15 @@
+name: Lint
+on:
+  pull_request:
+    paths:
+      - './next/Dockerfile'
+
+jobs:
+  hadolint:
+    runs-on: ubuntu-22.04
+    name: Hadolint
+    steps:
+      - uses: actions/checkout@v4
+      - uses: jbergstroem/hadolint-gh-action@v1
+        with:
+          dockerfile: next/Dockerfile
