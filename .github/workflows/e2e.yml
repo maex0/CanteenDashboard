@@ -5,7 +5,7 @@ on:
     branches: [main]
 
 jobs:
-  test:
+  e2e-tests:
     runs-on: ubuntu-latest
 
     steps:
@@ -14,6 +14,9 @@ jobs:
 
       - name: Set up Docker
         uses: docker-practice/actions-setup-docker@master
+
+      - name: List Docker containers
+        run: docker ps
 
       - name: Create .env.production file
         run: |
@@ -36,7 +39,7 @@ jobs:
           echo POSTGRES_DB=${{ secrets.POSTGRES_DB }} >> ./.env
 
       - name: Build and start Docker services
-        run: docker-compose up -d
+        run: docker-compose up -d prod
 
       - name: Change permissions
         run: sudo chmod -R 777 .
@@ -45,6 +48,10 @@ jobs:
         run: |
           npm config set prefix '~/.npm-global'
           npm ci
+
+      - name: Run Api Tests
+        working-directory: next
+        run: npm run test:api
 
       - name: Install Playwright Browsers
         working-directory: next
@@ -59,3 +66,6 @@ jobs:
           name: playwright-report
           path: next/playwright-report/
           retention-days: 3
+
+      - name: Stop Docker services
+        run: docker-compose down
