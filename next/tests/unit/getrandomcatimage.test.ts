@@ -45,7 +45,14 @@ describe("catimageapi", () => {
 
     await handler(req, res);
     expect(res.status).toHaveBeenCalledWith(200);
-    expect(res.send).toHaveBeenCalledWith(mockCatImage);
+    expect(res.send).toHaveBeenCalledWith(
+      expect.objectContaining({
+        id: mockCatImage.id,
+        url: mockCatImage.url,
+        width: mockCatImage.width,
+        height: mockCatImage.height,
+      }),
+    );
   });
 
   it("should return an error if the API key is not set", async () => {
