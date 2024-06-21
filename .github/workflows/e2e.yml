@@ -2,7 +2,7 @@ name: E2E Test
 
 on:
   workflow_run:
-    workflows: ['Build']
+    workflows: ['Build and Test']
     types:
       - completed
 
