@@ -51,6 +51,20 @@ jobs:
       - name: Set up Docker
         uses: docker-practice/actions-setup-docker@master
 
+      - name: Create .env.production file
+        run: |
+          echo DATABASE_URL=${{ secrets.DATABASE_URL }} >> ./next/.env.production
+          echo API_KEY=${{ secrets.API_KEY }} >> ./next/.env.production
+          echo API_URL=${{ secrets.API_URL }} >> ./next/.env.production
+          echo FAVORITE_COUNT=${{ secrets.FAVORITE_COUNT }} >> ./next/.env.production
+
+      - name: Create .env.local file
+        run: |
+          echo DATABASE_URL=${{ secrets.DATABASE_URL }} >> ./next/.env.local
+          echo API_KEY=${{ secrets.API_KEY }} >> ./next/.env.local
+          echo API_URL=${{ secrets.API_URL }} >> ./next/.env.local
+          echo FAVORITE_COUNT=${{ secrets.FAVORITE_COUNT }} >> ./next/.env.local
+
       - name: Build and start Docker services
         run: docker-compose up -d
 
