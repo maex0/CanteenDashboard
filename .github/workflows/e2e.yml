@@ -1,10 +1,9 @@
 name: E2E Test
 
 on:
-  workflow_run:
-    workflows: ['Build and Test']
-    types:
-      - completed
+  push:
+    branches:
+      - dev
 
 jobs:
   e2e-test:
