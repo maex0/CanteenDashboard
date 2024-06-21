@@ -9,7 +9,6 @@ on:
 jobs:
   e2e-test:
     name: E2E Test
-    if: github.event.workflow_run.conclusion == 'success' && github.event.head_commit.branch == 'dev'
     timeout-minutes: 7
     runs-on: ubuntu-latest
     steps:
