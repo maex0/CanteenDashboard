@@ -74,9 +74,13 @@ jobs:
       - name: Build and start Docker services
         run: docker-compose up -d
 
+      - name: Change permissions
+        run: sudo chmod -R 777 .
       - name: Install dependencies
         working-directory: next
-        run: npm ci
+        run: |
+          npm config set prefix '~/.npm-global'
+          npm ci
 
       - name: Run Playwright tests
         working-directory: next
