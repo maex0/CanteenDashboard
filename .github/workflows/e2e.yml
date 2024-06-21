@@ -46,7 +46,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up Docker
         uses: docker-practice/actions-setup-docker@master
@@ -55,7 +55,9 @@ jobs:
         run: docker-compose up -d
 
       - name: Install dependencies
+        working-directory: next
         run: npm ci
 
       - name: Run Playwright tests
+        working-directory: next
         run: npm run test:e2e
