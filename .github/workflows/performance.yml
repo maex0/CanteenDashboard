@@ -78,13 +78,13 @@ jobs:
             sleep 10
           done
 
-      - name: Change permissions
-        run: sudo chmod -R 777 .
-      - name: Install dependencies
-        working-directory: next
-        run: |
-          npm config set prefix '~/.npm-global'
-          npm ci
+      #   - name: Change permissions
+      #     run: sudo chmod -R 777 .
+      #   - name: Install dependencies
+      #     working-directory: next
+      #     run: |
+      #       npm config set prefix '~/.npm-global'
+      #       npm ci
 
       #   - name: JMeter Test
       #     uses: QAInsights/PerfAction@v5.6.2
