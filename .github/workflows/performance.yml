@@ -70,7 +70,7 @@ jobs:
       - name: Confirm Service Accessibility
         run: |
           for i in {1..10}; do
-            if curl -s http://localhost:3000/ > /dev/null; then
+            if curl -s http://prod:3000/ > /dev/null; then
               echo "Service is accessible"
               break
             fi
@@ -91,6 +91,7 @@ jobs:
         with:
           testFilePath: ./next/tests/performance/load-test.jmx
           outputReportsFolder: reports/
+          args: '--loglevel ERROR'
 
       - uses: actions/upload-artifact@v1
         with:
