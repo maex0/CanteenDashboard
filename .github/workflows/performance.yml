@@ -86,16 +86,26 @@ jobs:
           npm config set prefix '~/.npm-global'
           npm ci
 
-      - name: JMeter Test
-        uses: QAInsights/PerfAction@v5.6.2
-        with:
-          test-plan-path: ./next/tests/performance/load-test.jmx
+      #   - name: JMeter Test
+      #     uses: QAInsights/PerfAction@v5.6.2
+      #     with:
+      #       test-plan-path: ./next/tests/performance/load-test.jmx
 
-      - uses: actions/upload-artifact@v3
-        with:
-          name: jmeter-test-results
-          path: reports/
+      #   - uses: actions/upload-artifact@v3
+      #     with:
+      #       name: jmeter-test-results
+      #       path: reports/
 
+      - name: Run k6 local test
+        uses: grafana/k6-action@v0.3.1
+        with:
+          filename: ./next/tests/performance/script.js
+          flags: --out json=results.json
+      - name: Upload performance test results
+        uses: actions/upload-artifact@v3
+        with:
+          name: k6-report
+          path: results.json
       - name: Output Service Logs for Debugging
         run: docker-compose logs prod
 
