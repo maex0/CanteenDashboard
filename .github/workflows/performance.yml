@@ -101,6 +101,9 @@ jobs:
         with:
           filename: ./next/tests/performance/script.js
           flags: --out json=results.json
+        env:
+          BASE_URL: 'http://localhost:3000'
+
       - name: Upload performance test results
         uses: actions/upload-artifact@v3
         with:
