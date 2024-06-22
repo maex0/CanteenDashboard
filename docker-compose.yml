@@ -18,8 +18,8 @@ services:
       - db
     healthcheck:
       test: ['CMD-SHELL', 'curl -f http://localhost:3000/ || exit 1']
-      interval: 10s
-      timeout: 5s
+      interval: 20s
+      timeout: 20s
       retries: 5
 
   dev:

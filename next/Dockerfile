@@ -1,6 +1,8 @@
 # Base Node.js image for building
 FROM node:22-alpine AS base
 
+RUN apk update && apk add --no-cache curl
+
 # Create a non-root user and group
 RUN addgroup -S nonroot && adduser -S nonroot -G nonroot
 
@@ -43,6 +45,8 @@ RUN npm run build
 
 # Production Image (final stage)
 FROM node:18-alpine AS prod
+
+RUN apk update && apk add --no-cache curl
 
 # Create a non-root user and group
 RUN addgroup -S nonroot && adduser -S nonroot -G nonroot
