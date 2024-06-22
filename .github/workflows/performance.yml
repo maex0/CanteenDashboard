@@ -44,14 +44,24 @@ jobs:
         run: docker ps -a
       - name: Wait for DB to be healthy
         run: |
-          while ! docker inspect --format '{{json .State.Health.Status}}' softwarequalitywithcats_db_1 | grep -q '"healthy"'; do
+          for i in {1..30}; do
+            DB_STATUS=$(docker inspect --format '{{json .State.Health.Status}}' softwarequalitywithcats_db_1)
+            echo "DB Health Status: $DB_STATUS"
+            if [ "$DB_STATUS" == '"healthy"' ]; then
+              break
+            fi
             echo "Waiting for db service to be healthy..."
             sleep 10
           done
 
       - name: Wait for Prod to be healthy
         run: |
-          while ! docker inspect --format '{{json .State.Health.Status}}' softwarequalitywithcats_prod_1 | grep -q '"healthy"'; do
+          for i in {1..30}; do
+            PROD_STATUS=$(docker inspect --format '{{json .State.Health.Status}}' softwarequalitywithcats_prod_1)
+            echo "Prod Health Status: $PROD_STATUS"
+            if [ "$PROD_STATUS" == '"healthy"' ]; then
+              break
+            fi
             echo "Waiting for app service to be healthy..."
             sleep 10
           done
