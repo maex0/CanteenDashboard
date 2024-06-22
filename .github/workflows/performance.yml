@@ -41,6 +41,13 @@ jobs:
       - name: Build and start Docker services
         run: docker-compose up -d prod
 
+      - name: Wait for services to be ready
+        run: |
+          while ! docker-compose exec prod curl -f http://localhost:3000; do
+            echo "Waiting for service to be ready..."
+            sleep 5
+          done
+
       - name: Change permissions
         run: sudo chmod -R 777 .
       - name: Install dependencies
