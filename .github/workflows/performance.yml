@@ -40,7 +40,8 @@ jobs:
 
       - name: Build and start Docker services
         run: docker-compose up -d prod
-
+      - name: List Docker containers
+        run: docker ps -a
       - name: Wait for DB to be healthy
         run: |
           while ! docker inspect --format '{{json .State.Health.Status}}' softwarequalitywithcats-db-1 | grep -q '"healthy"'; do
