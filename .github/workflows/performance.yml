@@ -7,7 +7,7 @@ on:
 jobs:
   performance-tests:
     runs-on: ubuntu-latest
-
+    timeout-minutes: 10
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -44,14 +44,14 @@ jobs:
         run: docker ps -a
       - name: Wait for DB to be healthy
         run: |
-          while ! docker inspect --format '{{json .State.Health.Status}}' softwarequalitywithcats-db-1 | grep -q '"healthy"'; do
+          while ! docker inspect --format '{{json .State.Health.Status}}' softwarequalitywithcats_db_1 | grep -q '"healthy"'; do
             echo "Waiting for db service to be healthy..."
             sleep 10
           done
 
       - name: Wait for Prod to be healthy
         run: |
-          while ! docker inspect --format '{{json .State.Health.Status}}' softwarequalitywithcats-prod-1 | grep -q '"healthy"'; do
+          while ! docker inspect --format '{{json .State.Health.Status}}' softwarequalitywithcats_prod_1 | grep -q '"healthy"'; do
             echo "Waiting for app service to be healthy..."
             sleep 10
           done
