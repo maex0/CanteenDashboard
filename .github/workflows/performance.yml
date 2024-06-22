@@ -2,7 +2,7 @@ name: performance test
 
 on:
   push:
-    branches: [test]
+    branches: [dev]
 
 jobs:
   performance-tests:
@@ -40,6 +40,20 @@ jobs:
 
       - name: Build and start Docker services
         run: docker-compose up -d prod
+
+      - name: Wait for DB to be healthy
+        run: |
+          while ! docker inspect --format '{{json .State.Health.Status}}' ${GITHUB_REPOSITORY}_db_1 | grep -q '"healthy"'; do
+            echo "Waiting for db service to be healthy..."
+            sleep 10
+          done
+
+      - name: Wait for Prod to be healthy
+        run: |
+          while ! docker inspect --format '{{json .State.Health.Status}}' ${GITHUB_REPOSITORY}_app_1 | grep -q '"healthy"'; do
+            echo "Waiting for app service to be healthy..."
+            sleep 10
+          done
 
       - name: Change permissions
         run: sudo chmod -R 777 .
