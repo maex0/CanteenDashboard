@@ -1,11 +1,11 @@
-name: performance test
+name: lighthouse
 
 on:
   push:
-    branches: [dev]
+    branches: [main]
 
 jobs:
-  performance-tests:
+  lighthouse-test:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
