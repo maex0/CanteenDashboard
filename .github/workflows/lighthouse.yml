@@ -42,7 +42,6 @@ jobs:
         run: docker-compose up -d prod
       - name: List Docker containers
         run: docker ps -a
-
       - name: Wait for DB to be healthy
         run: |
           for i in {1..30}; do
@@ -67,17 +66,6 @@ jobs:
             sleep 10
           done
 
-      - name: Confirm Service Accessibility
-        run: |
-          for i in {1..10}; do
-            if curl -s http://localhost:3000/ > /dev/null; then
-              echo "Service is accessible"
-              break
-            fi
-            echo "Waiting for service to be accessible..."
-            sleep 10
-          done
-
       - name: Change permissions
         run: sudo chmod -R 777 .
       - name: Install dependencies
@@ -86,23 +74,17 @@ jobs:
           npm config set prefix '~/.npm-global'
           npm ci
 
-      - name: Run JMeter Tests
-        uses: rbhadti94/apache-jmeter-action@v0.5.0
+      - name: Run Lighthouse
+        uses: treosh/lighthouse-ci-action@v12
         with:
-          testFilePath: ./next/tests/performance/load-test.jmx
-          outputReportsFolder: reports/
-
-      - uses: actions/upload-artifact@v1
-        with:
-          name: jmeter-test-results
-          path: reports/
+          urls: http://localhost:3000
 
       - name: Output Service Logs for Debugging
         run: docker-compose logs prod
 
-      #   - name: Run Lighthouse Tests
-      #     working-directory: next
-      #     run: npm run test:performance
+        #   - name: Run Lighthouse Tests
+        #     working-directory: next
+        #     run: npm run test:performance
 
       - name: Stop Docker services
         run: docker-compose down
