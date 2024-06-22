@@ -86,14 +86,12 @@ jobs:
           npm config set prefix '~/.npm-global'
           npm ci
 
-      - name: Run JMeter Tests
-        uses: rbhadti94/apache-jmeter-action@v0.5.0
+      - name: JMeter Test
+        uses: QAInsights/PerfAction@v5.6.2
         with:
-          testFilePath: ./next/tests/performance/load-test.jmx
-          outputReportsFolder: reports/
-          args: '--loglevel ERROR'
+          test-plan-path: ./next/tests/performance/load-test.jmx
 
-      - uses: actions/upload-artifact@v1
+      - uses: actions/upload-artifact@v3
         with:
           name: jmeter-test-results
           path: reports/
