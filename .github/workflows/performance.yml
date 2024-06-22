@@ -70,7 +70,7 @@ jobs:
       - name: Confirm Service Accessibility
         run: |
           for i in {1..10}; do
-            if curl -s http://prod:3000/ > /dev/null; then
+            if curl -s http://localhost:3000/ > /dev/null; then
               echo "Service is accessible"
               break
             fi
@@ -100,10 +100,6 @@ jobs:
 
       - name: Output Service Logs for Debugging
         run: docker-compose logs prod
-
-      #   - name: Run Lighthouse Tests
-      #     working-directory: next
-      #     run: npm run test:performance
 
       - name: Stop Docker services
         run: docker-compose down
