@@ -55,6 +55,11 @@ jobs:
           testFilePath: ./next/tests/performance/load-test.jmx
           outputReportsFolder: reports/
 
+      - uses: actions/upload-artifact@v1
+        with:
+          name: jmeter-test-results
+          path: reports/
+
       #   - name: Run Lighthouse Tests
       #     working-directory: next
       #     run: npm run test:performance
