@@ -15,7 +15,7 @@
     "test:architecture": "depcruise src --include-only \"^src\"",
     "lint": "eslint 'src/**/*.{ts,tsx,yaml,yml}'",
     "lint:fix": "eslint 'src/**/*.{ts,tsx,yaml,yml}' --fix",
-    "test:api": "newman run tests/api/SoftwareQualityWithCats.postman_collection.json",
+    "test:api": "newman run tests/integration/api/SoftwareQualityWithCats.postman_collection.json",
     "test:performance": "lighthouse http://localhost:3000 --output html --output-path=./lighthouse-report.html --quiet"
   },
   "lint-staged": {

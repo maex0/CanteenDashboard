@@ -1,11 +1,11 @@
-name: performance test
+name: lighthouse
 
 on:
   push:
-    branches: [test]
+    branches: [main]
 
 jobs:
-  performance-tests:
+  lighthouse-test:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -42,7 +42,6 @@ jobs:
         run: docker-compose up -d prod
       - name: List Docker containers
         run: docker ps -a
-
       - name: Wait for DB to be healthy
         run: |
           for i in {1..30}; do
@@ -67,29 +66,19 @@ jobs:
             sleep 10
           done
 
-      - name: Confirm Service Accessibility
+      - name: Change permissions
+        run: sudo chmod -R 777 .
+      - name: Install dependencies
+        working-directory: next
         run: |
-          for i in {1..10}; do
-            if curl -s http://localhost:3000/ > /dev/null; then
-              echo "Service is accessible"
-              break
-            fi
-            echo "Waiting for service to be accessible..."
-            sleep 10
-          done
+          npm config set prefix '~/.npm-global'
+          npm ci
 
-      - name: Install k6
-        uses: grafana/setup-k6-action@v1
-
-      - name: Run k6 performance test
-        working-directory: ./next/tests/performance
-        run: |
-          k6 run -e API_BASE_URL=http://localhost:3000 load-test.js
-
-      - uses: actions/upload-artifact@v1
+      - name: Run Lighthouse
+        uses: treosh/lighthouse-ci-action@v12
         with:
-          name: k6-test-results
-          path: results/
+          urls: http://localhost:3000
+          uploadArtifacts: true
 
       - name: Output Service Logs for Debugging
         run: docker-compose logs prod
