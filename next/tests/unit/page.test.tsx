@@ -3,7 +3,7 @@
  */
 
 // Import necessary libraries and components
-import { render, fireEvent, waitFor } from "@testing-library/react";
+import { render, fireEvent, waitFor, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import React from "react";
 import axios from "axios";
@@ -11,6 +11,7 @@ import Home from "../../src/app/page";
 import { CatImage } from "@prisma/client";
 
 jest.mock("axios");
+const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 const EXAMPLE_URL = "http://example.com";
 
@@ -73,4 +74,41 @@ it("adds multiple cats to the liked cats when the Like button is clicked", async
   // Check if the cat was added to the liked cats
   const likedCats = getAllByAltText("Cat image from TheCatAPI");
   expect(likedCats).toHaveLength(1);
+});
+
+describe("Home component", () => {
+  it("should like a cat and update the recent liked cats list", async () => {
+    const catImage: CatImage = {
+      id: "1",
+      url: EXAMPLE_URL,
+      width: 100,
+      height: 100,
+      createdAt: new Date(),
+    };
+    const mockResponse = { data: catImage, status: 201 };
+
+    // Mocking axios calls
+    mockedAxios.get.mockResolvedValueOnce({ data: catImage });
+    mockedAxios.post.mockResolvedValueOnce(mockResponse);
+    mockedAxios.get.mockResolvedValueOnce({ data: catImage });
+
+    // Render the Home component
+    const { getByText } = render(<Home />);
+
+    // Wait for the cat image to be loaded
+    expect(await screen.findByRole("img")).toBeInTheDocument();
+
+    // Simulate a click on the Like button
+    fireEvent.click(getByText("Like"));
+
+    // Check if axios.post was called with the correct arguments
+    expect(mockedAxios.post).toHaveBeenCalledWith(
+      "/api/catimageshandler",
+      catImage,
+    );
+
+    // Verify the recent liked cats list update
+    const recentLikedCats = await screen.findAllByRole("img");
+    expect(recentLikedCats).toHaveLength(1);
+  });
 });
