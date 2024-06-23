@@ -105,6 +105,9 @@ jobs:
       - name: k6 login
         run: k6 login cloud --token ${{ secrets.K6_TOKEN }}
 
+      - name: check container
+        run: docker-compose logs prod
+
       - name: Run k6 performance test
         working-directory: next
         run: |
@@ -113,7 +116,6 @@ jobs:
           set +x
 
       - name: Upload k6 test results
-        if: failure()
         uses: actions/upload-artifact@v1
         with:
           name: k6-test-results

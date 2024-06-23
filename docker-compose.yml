@@ -37,6 +37,8 @@ services:
     volumes:
       - ./next:/app
       - /app/node_modules
+    networks:
+      - default
     depends_on:
       - db
   db:
