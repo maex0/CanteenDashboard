@@ -66,7 +66,7 @@ const Home: React.FC = () => {
     }
   };
 
-  const loadRecentlyLikedCats = async () => {
+  const loadRecentLikedCats = async () => {
     try {
       const response = await axios.get("/api/catimageshandler");
 
@@ -81,7 +81,7 @@ const Home: React.FC = () => {
   };
 
   useEffect(() => {
-    loadRecentlyLikedCats();
+    loadRecentLikedCats();
     fetchRandomCat();
   }, []);
 
