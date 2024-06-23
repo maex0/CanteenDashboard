@@ -2,7 +2,7 @@ name: performance test
 
 on:
   push:
-    branches: [test]
+    branches: [dev]
 
 jobs:
   performance-tests:
