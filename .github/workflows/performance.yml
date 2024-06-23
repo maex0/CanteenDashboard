@@ -82,8 +82,9 @@ jobs:
         uses: grafana/setup-k6-action@v1
 
       - name: Run k6 performance test
+        working-directory: ./next/tests/performance
         run: |
-          k6 run -e API_BASE_URL=http://localhost:3000 ./next/tests/performance/load-test.js
+          k6 run -e API_BASE_URL=http://localhost:3000 load-test.js
 
       - uses: actions/upload-artifact@v1
         with:
