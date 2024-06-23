@@ -67,5 +67,9 @@ jobs:
           path: next/playwright-report/
           retention-days: 3
 
+      - name: Run Acceptance Tests
+        working-directory: next
+        run: npm run test:acceptance
+
       - name: Stop Docker services
         run: docker-compose down
