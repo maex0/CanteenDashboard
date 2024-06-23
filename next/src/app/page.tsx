@@ -50,13 +50,16 @@ const Home: React.FC = () => {
         const response = await axios.post("/api/catimageshandler", cat);
 
         if (response.status === 201) {
-          if (threeRecentLikedCats.length >= MAX_LIKED_CAT_IMAGES) {
-            threeRecentLikedCats.pop();
-            const updatedThreeRecentLikedCats = [cat, ...threeRecentLikedCats];
-            setThreeRecentLikedCats(updatedThreeRecentLikedCats);
+          let updatedThreeRecentLikedCats = [...threeRecentLikedCats];
+          if (updatedThreeRecentLikedCats.length >= MAX_LIKED_CAT_IMAGES) {
+            updatedThreeRecentLikedCats = [
+              cat,
+              ...updatedThreeRecentLikedCats.slice(0, -1),
+            ];
           } else {
-            threeRecentLikedCats.push(cat);
+            updatedThreeRecentLikedCats = [cat, ...updatedThreeRecentLikedCats];
           }
+          setThreeRecentLikedCats(updatedThreeRecentLikedCats);
         } else {
           return;
         }
