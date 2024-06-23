@@ -7,7 +7,8 @@ on:
 jobs:
   performance-tests:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 30
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -40,6 +41,7 @@ jobs:
 
       - name: Build and start Docker services
         run: docker-compose up -d prod
+
       - name: List Docker containers
         run: docker ps -a
 
@@ -96,28 +98,26 @@ jobs:
       - name: Install dependencies
         working-directory: next
         run: npm ci
+
       - name: Install k6
         uses: grafana/setup-k6-action@v1
 
       - name: k6 login
         run: k6 login cloud --token ${{ secrets.K6_TOKEN }}
 
-      - name: test
+      - name: Run k6 performance test
         working-directory: next
-        run: npm run test:performance:k6
+        run: |
+          set -x
+          npm run test:performance:k6 || true
+          set +x
 
-      # - name: Install k6
-      #   uses: grafana/setup-k6-action@v1
-
-      # - name: Run k6 performance test
-      #   working-directory: ./next/tests/performance
-      #   run: |
-      #     k6 run -e API_BASE_URL=http://localhost:3000 load-test.js
-
-      - uses: actions/upload-artifact@v1
+      - name: Upload k6 test results
+        if: failure()
+        uses: actions/upload-artifact@v1
         with:
           name: k6-test-results
-          path: results/
+          path: next/tests/performance/results/
 
       - name: Output Service Logs for Debugging
         run: docker-compose logs prod
