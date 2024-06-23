@@ -78,37 +78,18 @@ jobs:
             sleep 10
           done
 
-      #   - name: Change permissions
-      #     run: sudo chmod -R 777 .
-      #   - name: Install dependencies
-      #     working-directory: next
-      #     run: |
-      #       npm config set prefix '~/.npm-global'
-      #       npm ci
+      - name: Install k6
+        uses: grafana/setup-k6-action@v1
 
-      #   - name: JMeter Test
-      #     uses: QAInsights/PerfAction@v5.6.2
-      #     with:
-      #       test-plan-path: ./next/tests/performance/load-test.jmx
+      - name: Run k6 performance test
+        run: |
+          k6 run -e API_BASE_URL=http://localhost:3000 ./next/tests/performance/load-test.js
 
-      #   - uses: actions/upload-artifact@v3
-      #     with:
-      #       name: jmeter-test-results
-      #       path: reports/
-
-      - name: Run k6 local test
-        uses: grafana/k6-action@v0.3.1
+      - uses: actions/upload-artifact@v1
         with:
-          filename: ./next/tests/performance/script.js
-          flags: --out json=results.json
-        env:
-          BASE_URL: 'http://localhost:3000'
+          name: k6-test-results
+          path: results/
 
-      - name: Upload performance test results
-        uses: actions/upload-artifact@v3
-        with:
-          name: k6-report
-          path: results.json
       - name: Output Service Logs for Debugging
         run: docker-compose logs prod
 
