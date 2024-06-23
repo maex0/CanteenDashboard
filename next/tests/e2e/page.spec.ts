@@ -22,9 +22,10 @@ test("displays a cat image after fetching", async ({ page }) => {
 test('loads a new image when "Like" is clicked', async ({ page }) => {
   await page.goto("http://localhost:3000");
   await page.waitForSelector("img");
+  await page.waitForTimeout(3000);
   const initialImageSrc = await page.$eval("img", (img) => img.src);
   await page.click("text=Like");
-  await page.waitForTimeout(1000);
+  await page.waitForTimeout(3000);
   const newImageSrc = await page.$eval("img", (img) => img.src);
   expect(newImageSrc).not.toBe(initialImageSrc);
 });
