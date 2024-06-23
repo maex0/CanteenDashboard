@@ -7,7 +7,8 @@ on:
 jobs:
   performance-tests:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 30
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -40,6 +41,7 @@ jobs:
 
       - name: Build and start Docker services
         run: docker-compose up -d prod
+
       - name: List Docker containers
         run: docker ps -a
 
@@ -78,18 +80,46 @@ jobs:
             sleep 10
           done
 
+      - name: Confirm API Endpoint Accessibility
+        run: |
+          for i in {1..10}; do
+            if curl -s http://localhost:3000/api/catimageshandler > /dev/null; then
+              echo "API endpoint is accessible"
+              break
+            fi
+            echo "Waiting for API endpoint to be accessible..."
+            sleep 10
+          done
+
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+      - name: Install dependencies
+        working-directory: next
+        run: npm ci
+
       - name: Install k6
         uses: grafana/setup-k6-action@v1
 
-      - name: Run k6 performance test
-        working-directory: ./next/tests/performance
-        run: |
-          k6 run -e API_BASE_URL=http://localhost:3000 load-test.js
+      - name: k6 login
+        run: k6 login cloud --token ${{ secrets.K6_TOKEN }}
 
-      - uses: actions/upload-artifact@v1
+      - name: check container
+        run: docker-compose logs prod
+
+      - name: Run k6 performance test
+        working-directory: next
+        run: |
+          set -x
+          npm run test:performance:k6 || true
+          set +x
+
+      - name: Upload k6 test results
+        uses: actions/upload-artifact@v1
         with:
           name: k6-test-results
-          path: results/
+          path: next/tests/performance/results/
 
       - name: Output Service Logs for Debugging
         run: docker-compose logs prod

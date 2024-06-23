@@ -3,7 +3,6 @@
 ![GitHub Workflow Status](https://github.com/maex0/SoftwareQualityWithCats/actions/workflows/ci.yml/badge.svg)
 [![CodeQL](https://github.com/maex0/SoftwareQualityWithCats/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/maex0/SoftwareQualityWithCats/actions/workflows/github-code-scanning/codeql)
 [![E2E Test](https://github.com/maex0/SoftwareQualityWithCats/actions/workflows/e2e.yml/badge.svg)](https://github.com/maex0/SoftwareQualityWithCats/actions/workflows/e2e.yml)
-[![Lint](https://github.com/maex0/SoftwareQualityWithCats/actions/workflows/lint.yml/badge.svg)](https://github.com/maex0/SoftwareQualityWithCats/actions/workflows/lint.yml)
 
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=maex0_SoftwareQualityWithCats&metric=bugs)](https://sonarcloud.io/summary/new_code?id=maex0_SoftwareQualityWithCats)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=maex0_SoftwareQualityWithCats&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=maex0_SoftwareQualityWithCats)

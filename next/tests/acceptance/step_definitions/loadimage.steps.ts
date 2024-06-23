@@ -59,6 +59,7 @@ Then(
   "Image is added to Three recent liked cats",
   async function (this: ICustomWorld) {
     const page = this.page!;
+    await page.waitForTimeout(1000);
     const likedImagesSrc = await page.$$eval(".liked-cat-image", (elements) =>
       elements.map((element) => {
         if (element instanceof HTMLImageElement) {

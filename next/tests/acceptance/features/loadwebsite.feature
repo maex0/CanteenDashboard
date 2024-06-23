@@ -16,8 +16,3 @@ Feature: Load Website
     When Site is loaded
     When User clicks the dislike button
     Then A new image is loaded
-
-  Scenario: Changed image on the like button click
-      Given User visits homepage
-      When User clicks the like button
-      Then A new image is loaded

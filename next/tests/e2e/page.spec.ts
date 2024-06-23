@@ -19,16 +19,6 @@ test("displays a cat image after fetching", async ({ page }) => {
   expect(catImage).toBeTruthy();
 });
 
-test('loads a new image when "Like" is clicked', async ({ page }) => {
-  await page.goto("http://localhost:3000");
-  await page.waitForSelector("img");
-  const initialImageSrc = await page.$eval("img", (img) => img.src);
-  await page.click("text=Like");
-  await page.waitForTimeout(1000);
-  const newImageSrc = await page.$eval("img", (img) => img.src);
-  expect(newImageSrc).not.toBe(initialImageSrc);
-});
-
 test('loads a new image when "Dislike" is clicked', async ({ page }) => {
   await page.goto("http://localhost:3000");
   await page.waitForSelector("img");

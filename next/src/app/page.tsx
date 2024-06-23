@@ -34,35 +34,40 @@ const Home: React.FC = () => {
       setCat(catImage);
       return catImage;
     } catch (error_) {
+      console.error("Failed to fetch a new cat image");
       return;
     }
   };
 
   const vote = async (decision: Decision) => {
-    try {
-      await fetchRandomCat();
-    } catch (error_) {
-      return;
-    }
-
     if (decision == Decision.Like && cat) {
       try {
         const response = await axios.post("/api/catimageshandler", cat);
 
         if (response.status === 201) {
-          if (threeRecentLikedCats.length >= MAX_LIKED_CAT_IMAGES) {
-            threeRecentLikedCats.pop();
-            const updatedThreeRecentLikedCats = [cat, ...threeRecentLikedCats];
-            setThreeRecentLikedCats(updatedThreeRecentLikedCats);
-          } else {
-            threeRecentLikedCats.push(cat);
+          let updatedThreeRecentLikedCats = [cat, ...threeRecentLikedCats];
+          if (updatedThreeRecentLikedCats.length >= MAX_LIKED_CAT_IMAGES) {
+            updatedThreeRecentLikedCats = updatedThreeRecentLikedCats.slice(
+              0,
+              MAX_LIKED_CAT_IMAGES,
+            );
           }
+
+          setThreeRecentLikedCats(updatedThreeRecentLikedCats);
         } else {
+          console.error("Failed to like the cat image");
           return;
         }
       } catch (error_) {
+        console.error("Failed to like the cat image");
         return;
       }
+    }
+
+    try {
+      await fetchRandomCat();
+    } catch (error_) {
+      console.error("Failed to fetch a new cat image");
     }
   };
 
@@ -76,7 +81,7 @@ const Home: React.FC = () => {
       const catImages: CatImage[] = response.data;
       setThreeRecentLikedCats(catImages.slice(0, MAX_LIKED_CAT_IMAGES));
     } catch (error_) {
-      return;
+      console.error("Failed to fetch recent liked cats");
     }
   };
 
