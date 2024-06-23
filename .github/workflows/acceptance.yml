@@ -25,6 +25,13 @@ jobs:
           echo API_URL=${{ secrets.API_URL }} >> ./next/.env.production
           echo FAVORITE_COUNT=${{ secrets.FAVORITE_COUNT }} >> ./next/.env.production
 
+      - name: Create .env.local file
+        run: |
+          echo DATABASE_URL=${{ secrets.DATABASE_URL }} >> ./next/.env.local
+          echo API_KEY=${{ secrets.API_KEY }} >> ./next/.env.local
+          echo API_URL=${{ secrets.API_URL }} >> ./next/.env.local
+          echo FAVORITE_COUNT=${{ secrets.FAVORITE_COUNT }} >> ./next/.env.local
+
       - name: Create .env file
         run: |
           echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} >> ./.env
