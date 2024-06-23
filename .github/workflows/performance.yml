@@ -87,6 +87,10 @@ jobs:
         run: npm ci
       - name: Install k6
         uses: grafana/setup-k6-action@v1
+
+      - name: k6 login
+        run: k6 login cloud --token ${{ secrets.K6_TOKEN }}
+
       - name: test
         working-directory: next
         run: npm run test:performance:k6
